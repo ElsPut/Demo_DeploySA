@@ -1,0 +1,2 @@
+This is my file
+Version 1 - modified locally
