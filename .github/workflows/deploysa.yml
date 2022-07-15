@@ -3,6 +3,7 @@ name: "deploy Azure storage account"
 on:
   push:
     branches: [ "main" ]
+    paths-ignore: ["*.ps1", ".github/workflows/*"]
   workflow_dispatch:
 
 jobs:
