@@ -2,7 +2,7 @@
 
 resource mysa 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: 'saels52'
-  location: WestEurope
+  location: 'WestEurope'
   sku: {
     name:  'Standard_LRS'
   }
