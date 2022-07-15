@@ -41,3 +41,11 @@ jobs:
       - name: Show sa name
         run: |
           echo ${{steps.deploy-sa.outputs.mysaname}}
+      - uses: azure/arm-deploy@v1
+        name: Deploy storage container
+        id: deploy-sa-container
+        with:
+          deploymentName: ${{github.run_number}}
+          resourceGroupName: ${{env.AZURE_RG_NAME}}
+          template: ./blobcontainer.bicep
+          parameters: mysaname=${{steps.deploy-sa.outputs.mysaname}}
