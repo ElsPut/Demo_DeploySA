@@ -1,0 +1,42 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy to environments
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment: development
+    env: 
+      Azure_RG_Name: RG40-Dev
+    steps:
+      - uses: actions/checkout@v3
+      - name: sign in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
+      - name: Deploy RG
+        uses: azure/cli@v1
+        with:
+          inlineScript: az group create --name ${{env.Azure_RG_Name}} --location WestEurope
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: production
+    env: 
+      Azure_RG_Name: RG40-Prod
+    needs: [deploy-dev]
+    steps:
+      - uses: actions/checkout@v3
+      - name: sign in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS_PROD}}
+      - name: Deploy RG
+        uses: azure/cli@v1
+        with:
+          inlineScript: az group create --name ${{env.Azure_RG_Name}} --location WestEurope
